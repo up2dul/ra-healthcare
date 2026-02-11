@@ -6,8 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
+import { Provider as UrqlProvider } from "urql";
 import type { Route } from "./+types/root";
+import client from "./lib/urql";
 
 import "./index.css";
 import Header from "./components/layout/header";
@@ -53,14 +54,16 @@ export default function App() {
       disableTransitionOnChange
       storageKey="vite-ui-theme"
     >
-      <div className="grid h-svh grid-rows-[auto_1fr]">
-        <Header />
+      <UrqlProvider value={client}>
+        <div className="grid h-svh grid-rows-[auto_1fr]">
+          <Header />
 
-        <main className="px-2 py-4 md:px-12 lg:px-44 xl:px-72 2xl:px-96">
-          <Outlet />
-        </main>
-      </div>
-      <Toaster richColors />
+          <main className="px-2 py-4 md:px-12 lg:px-44 xl:px-72 2xl:px-96">
+            <Outlet />
+          </main>
+        </div>
+        <Toaster richColors />
+      </UrqlProvider>
     </ThemeProvider>
   );
 }
