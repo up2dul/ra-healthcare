@@ -3,6 +3,7 @@ import { gql } from "urql";
 export const appointmentFields = gql`
   fragment AppointmentFields on Appointment {
     id
+    patientId
     title
     description
     startTime
@@ -10,6 +11,10 @@ export const appointmentFields = gql`
     status
     createdAt
     updatedAt
+    patient {
+      id
+      name
+    }
   }
 `;
 
@@ -20,13 +25,7 @@ export const appointmentsQuery = gql`
       endDate: $endDate
       patientId: $patientId
     ) {
-      data {
-        ...AppointmentFields
-      }
-      total
-      page
-      limit
-      totalPages
+      ...AppointmentFields
     }
   }
   ${appointmentFields}
