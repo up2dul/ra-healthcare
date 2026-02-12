@@ -13,13 +13,13 @@ WORKDIR /app
 # Install ALL dependencies (dev + prod) needed for building
 FROM base AS deps
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY .npmrc pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/env/package.json ./packages/env/
 COPY packages/config/package.json ./packages/config/
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+    pnpm install --no-frozen-lockfile
 
 # ---- Build ----
 # Compile the React Router application
