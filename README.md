@@ -2,6 +2,8 @@
   <h1>🏥 RaHealthcare</h1>
 </div>
 
+![App screenshot](/apps/web/public/screenshot.png)
+
 > A healthcare management system for managing patients, appointments, and workflows — built with React, Express, GraphQL, and PostgreSQL in a Turborepo monorepo.
 
 ## Table of Contents
