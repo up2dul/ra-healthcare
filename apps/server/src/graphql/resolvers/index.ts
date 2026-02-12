@@ -1,5 +1,4 @@
-import { GraphQLScalarType, Kind } from "graphql";
-import { GraphQLError } from "graphql/error";
+import { GraphQLError, GraphQLScalarType, Kind } from "graphql";
 import { appointmentResolvers } from "./appointment";
 import { patientResolvers } from "./patient";
 import { workflowResolvers } from "./workflow";
