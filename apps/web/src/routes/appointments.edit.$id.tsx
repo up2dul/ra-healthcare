@@ -83,7 +83,6 @@ export default function EditAppointmentPage() {
       const res = await updateAppointment({
         id,
         input: {
-          patientId: value.patientId,
           title: value.title,
           description: value.description || undefined,
           startTime: combineDateAndTime(value.date, value.startTime),
