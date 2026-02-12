@@ -29,3 +29,58 @@ export function fieldError(error: unknown): string {
     return String((error as { message: string }).message);
   return String(error);
 }
+
+/** Return the first and last day of the month for the given date. */
+export function getMonthDateRange(date: Date): { start: Date; end: Date } {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    0,
+    23,
+    59,
+    59,
+    999,
+  );
+  return { start, end };
+}
+
+/** Format a Date or ISO string to a YYYY-MM-DD key for grouping. */
+export function toDateKey(date: Date | string): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+/** Group items by a date key derived from each item. */
+export function groupByDateKey<T>(
+  items: T[],
+  getDate: (item: T) => string,
+): Map<string, T[]> {
+  const map = new Map<string, T[]>();
+  for (const item of items) {
+    const key = toDateKey(getDate(item));
+    const existing = map.get(key);
+    if (existing) {
+      existing.push(item);
+    } else {
+      map.set(key, [item]);
+    }
+  }
+  return map;
+}
+
+/** Combine a YYYY-MM-DD date string with an HH:mm time string into an ISO datetime string. */
+export function combineDateAndTime(date: string, time: string): string {
+  return new Date(`${date}T${time}`).toISOString();
+}
+
+/** Extract HH:mm from an ISO datetime string. */
+export function toTimeString(iso: string): string {
+  const d = new Date(iso);
+  const h = String(d.getHours()).padStart(2, "0");
+  const m = String(d.getMinutes()).padStart(2, "0");
+  return `${h}:${m}`;
+}
