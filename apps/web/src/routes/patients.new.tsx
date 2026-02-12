@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useMutation } from "urql";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -163,12 +164,11 @@ export default function NewPatientPage() {
                     <Label htmlFor={field.name}>
                       Date of Birth <span className="text-destructive">*</span>
                     </Label>
-                    <Input
+                    <DatePicker
                       id={field.name}
                       name={field.name}
-                      type="date"
                       value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(val) => field.handleChange(val)}
                       onBlur={field.handleBlur}
                       aria-invalid={
                         field.state.meta.isTouched && !field.state.meta.isValid
