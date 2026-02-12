@@ -1,0 +1,55 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:17.6-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./apps/server/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+      CORS_ORIGIN: http://localhost:4173
+      NODE_ENV: production
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+      args:
+        VITE_SERVER_URL: http://localhost:3000
+    restart: always
+    ports:
+      - 4173:4173
+    depends_on:
+      - server
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+# Allows containers to communicate using their container name as hostname
+networks:
+  app_network:
+    driver: bridge
