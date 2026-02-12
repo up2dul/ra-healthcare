@@ -1,15 +1,8 @@
 import { env } from "@ra-healthcare/env/web";
-import { cacheExchange } from "@urql/exchange-graphcache";
+import { type Cache, cacheExchange } from "@urql/exchange-graphcache";
 import { Client, fetchExchange } from "urql";
 
-function invalidateQueries(
-  cache: Parameters<
-    NonNullable<
-      NonNullable<Parameters<typeof cacheExchange>[0]>["updates"]
-    >["Mutation"][string]
-  >[2],
-  fieldName: string,
-) {
+function invalidateQueries(cache: Cache, fieldName: string) {
   const fields = cache
     .inspectFields("Query")
     .filter((f) => f.fieldName === fieldName);
@@ -35,6 +28,9 @@ const client = new Client({
           },
           deleteAppointment(_result, _args, cache) {
             invalidateQueries(cache, "appointments");
+          },
+          saveWorkflow(_result, _args, cache) {
+            invalidateQueries(cache, "workflowSteps");
           },
         },
       },
