@@ -57,7 +57,7 @@ export const saveWorkflowSchema = z.object({
   steps: z
     .array(
       z.object({
-        id: z.uuid().nullish(),
+        id: z.string().nullable().optional(),
         label: z.string().min(1, "Label is required").max(255),
         order: z.number().int().min(0),
       }),
