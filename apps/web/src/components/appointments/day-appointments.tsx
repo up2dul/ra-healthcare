@@ -1,4 +1,5 @@
 import { CalendarDays } from "lucide-react";
+import { Link } from "react-router";
 import { formatDate } from "@/lib/utils";
 import { AppointmentCard } from "./appointment-card";
 import type { AppointmentItem } from "./types";
@@ -26,7 +27,9 @@ export function DayAppointments({ date, appointments }: DayAppointmentsProps) {
         <ul className="flex flex-col gap-2">
           {appointments.map((apt) => (
             <li key={apt.id}>
-              <AppointmentCard appointment={apt} />
+              <Link to={`/appointments/${apt.id}`}>
+                <AppointmentCard appointment={apt} />
+              </Link>
             </li>
           ))}
         </ul>
